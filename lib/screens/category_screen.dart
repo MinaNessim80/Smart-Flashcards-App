@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import '../data/questions_data.dart';
 
 class CategoryScreen extends StatelessWidget {
-  final List<String> categories = ['Geography', 'Math', 'Literature'];
+  final categories = categorizedQuestions.keys.toList();
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,11 @@ class CategoryScreen extends StatelessWidget {
           return ListTile(
             title: Text(categories[index]),
             onTap: () {
-              Navigator.pushNamed(context, '/quiz', arguments: categories[index]);
+              Navigator.pushNamed(
+                context,
+                '/quiz',
+                arguments: categories[index],
+              );
             },
           );
         },
