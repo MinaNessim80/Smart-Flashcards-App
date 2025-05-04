@@ -20,18 +20,27 @@ class _AddCategoryQuestionScreenState extends State<AddCategoryQuestionScreen> {
       String questionText = _questionController.text.trim();
       List<String> options = _optionControllers.map((c) => c.text.trim()).toList();
       if (!options.contains('')) {
-        // Add category if not exists
-        if (!questions.any((q) => q.category == category)) {
-          // Just add the question, categories are inferred from questions
-        }
-        // Add question
-        questions.add(Question(
+        // Create new question
+        Question newQuestion = Question(
           questionText: questionText,
           options: options,
           correctAnswerIndex: _correctAnswerIndex,
-          category: category,
-        ));
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Category and question added!')));
+        );
+        
+        // Check if category exists
+        if (categorizedQuestions.containsKey(category)) {
+          // Add question to existing category
+          categorizedQuestions[category]!.add(newQuestion);
+        } else {
+          // Create new category with this question
+          categorizedQuestions[category] = [newQuestion];
+        }
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Category and question added successfully!'))
+        );
+        
+        // Clear form
         _categoryController.clear();
         _questionController.clear();
         _optionControllers.forEach((c) => c.clear());

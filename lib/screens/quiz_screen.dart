@@ -18,9 +18,16 @@ class _QuizScreenState extends State<QuizScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final category = ModalRoute.of(context)!.settings.arguments as String?;
-    categoryQuestions = questions.where((q) => q.category == category).toList();
-    if (categoryQuestions.isEmpty) {
-      categoryQuestions = questions;
+    
+    if (category != null && categorizedQuestions.containsKey(category)) {
+      // If a specific category is selected, use questions from that category
+      categoryQuestions = categorizedQuestions[category]!;
+    } else {
+      // If no category is selected or category doesn't exist, use all questions
+      categoryQuestions = [];
+      categorizedQuestions.forEach((_, questions) {
+        categoryQuestions.addAll(questions);
+      });
     }
   }
 
